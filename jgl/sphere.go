@@ -52,9 +52,10 @@ func NewSphere(radius float64) *Sphere {
 
 func (this *Sphere) Draw(transform lmath.Mat4) {
 	gl.Begin(gl.POINTS)
-	gl.Color3f(float32(this.Mat.Color[0]),
-		float32(this.Mat.Color[1]),
-		float32(this.Mat.Color[2]))
+	// gl.Color3f(float32(this.Mat.Color[0]),
+	// 	float32(this.Mat.Color[1]),
+	// 	float32(this.Mat.Color[2]))
+	gl.Color3f(1, 0, 0)
 
 	for i := 0; i < len(this.vertices); i++ {
 		v := transform.MultVec3(this.vertices[i])
@@ -109,21 +110,11 @@ func (this *Sphere) Intersects(ray Ray, hit HitRecord, transform lmath.Mat4) Hit
 	return hit
 }
 
-func (this *Sphere) Direction(hitPoint lmath.Vec3, transform lmath.Mat4) lmath.Vec3 {
-	trans_pos := transform.MultVec3(this.Pos)
-	return trans_pos.Sub(hitPoint).Normalize()
-	// return this.Pos.Sub(hitPoint).Normalize()
-}
-
 func (this *Sphere) Normal(hitPoint lmath.Vec3, hit HitRecord) lmath.Vec3 {
 	trans_pos := hit.Transform.MultVec3(this.Pos)
 	trans_rad_vec := hit.Transform.MultVec3(this.radius_vec)
 	radius := trans_rad_vec.Sub(trans_pos).Length()
 	return hitPoint.Sub(trans_pos).DivScalar(radius)
-}
-
-func (this *Sphere) IsLight() bool {
-	return this.LightFlag
 }
 
 func (this Sphere) Material() Material {

@@ -8,7 +8,6 @@ type Camera struct {
 	Eye lmath.Vec3
 	At  lmath.Vec3
 
-	FocalLength float64
 	//Forward,Right,Up lmath.Vec3
 }
 

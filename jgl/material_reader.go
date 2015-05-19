@@ -9,23 +9,23 @@ import (
 // Create a dictionary of materials.(key = string, value = Material)
 // Read the material data from the specified JSON file.
 // No error handling on this.
-func DeserializeMaterials(filename string) map[string]Material {
+func DeserializeMaterials(filename string) (map[string]Material, bool) {
 	out := make(map[string]Material)
 
 	fin, err := os.Open(filename)
 	if err != nil {
 		fmt.Println("Unable to open file : ", filename)
-		return out
+		return out, false
 	}
 	defer fin.Close()
 
 	decoder := json.NewDecoder(fin)
 	if err := decoder.Decode(&out); err != nil {
 		fmt.Println("Unable to decode: ", filename)
-		return out
+		return out, false
 	}
 
-	return out
+	return out, true
 }
 
 // Given a dictionary [string]Material, serialize the data into a JSON file.
