@@ -88,3 +88,41 @@ func LookAtVec3(eye, at, up_in lmath.Vec3) (forward, right, up lmath.Vec3) {
 	up = forward.Cross(right).Normalize()
 	return
 }
+
+// Take the given screen coordinates on the image-plane and convert
+// into world-space coordinates
+func UnProject(screenPos lmath.Vec3,
+	perspectiveMat lmath.Mat4,
+	modelViewMat lmath.Mat4,
+	viewport [4]int32,
+) (worldPoint lmath.Vec3) {
+
+	// calcualte the inverse matrix to undot he modelView and perspective matrices
+	finalMat := modelViewMat.Mult(perspectiveMat).Inverse()
+
+	x, y, z := screenPos.X, float64(viewport[3])-screenPos.Y, 0.0
+	// translate to origin, then scale down into the range [0,1]
+	x = (x - float64(viewport[0])) / float64(viewport[2])
+	y = (y - float64(viewport[1])) / float64(viewport[3])
+	// scale to width 2, then translate by -1, so that coordinates are in [-1,1]
+	x = x*2 - 1
+	y = y*2 - 1
+	z = z*2 - 1
+	worldPoint.X = x
+	worldPoint.Y = y
+	worldPoint.Z = z
+	// Multiply the inverse matrix against the point
+	worldPoint = worldPoint.MultMat4(finalMat)
+	return
+}
+
+func Viewport(x, y, width, height int) (out lmath.Mat4) {
+	// fmt.Println("Unimplemented!")
+	// out.Load([16]float64{
+	// 		w/2, 0,0,(w-1)/2,
+	// 		0, h/2,0,(h-1)/2,
+	// 		0,0,1,0,
+	// 		0,0,0,1
+	// })
+	return
+}
