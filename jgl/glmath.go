@@ -84,6 +84,7 @@ func LookAt(eye, at, up lmath.Vec3) (out lmath.Mat4) {
 //	up is the direction which is considered up. It is up to the user to ensure that the forward dir is not parallel to up.
 func LookAtVec3(eye, at, up_in lmath.Vec3) (forward, right, up lmath.Vec3) {
 	forward = at.Sub(eye).Normalize().MultScalar(-1.0)
+	// forward = at.Sub(eye).Normalize()
 	right = up_in.Cross(forward).Normalize()
 	up = forward.Cross(right).Normalize()
 	return
@@ -116,7 +117,12 @@ func UnProject(screenPos lmath.Vec3,
 	return
 }
 
-func Viewport(x, y, width, height int) (out lmath.Mat4) {
+//Specify a matrix which transforms a vector from NDC space into screen space
+// Idea is to translate from the range [-1,1] -> [0,2]
+// Apply a scale from 2 -> width (or height)
+// translate by the specified x and y
+// What about z??
+func ViewportMat(x, y, width, height int) (out lmath.Mat4) {
 	// fmt.Println("Unimplemented!")
 	// out.Load([16]float64{
 	// 		w/2, 0,0,(w-1)/2,

@@ -12,3 +12,12 @@ func closeEq(a, b, eps float32) bool {
 		return ((b - a) < eps)
 	}
 }
+
+// Checks if two floats are equal. Doing a comparision using a small epsilon value
+func closeEqf64(a, b, eps float64) bool {
+	if a > b {
+		return ((a - b) < eps)
+	} else {
+		return ((b - a) < eps)
+	}
+}
