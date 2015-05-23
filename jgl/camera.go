@@ -9,10 +9,18 @@ type Camera struct {
 	eye lmath.Vec3
 	at  lmath.Vec3
 	up  lmath.Vec3
+
+	// container to hold the projection matrix
+	IsOrtho       bool
+	Frustum       FrustumDim
+	ProjectionMat lmath.Mat4
 }
 
 func MakeCamera(eye, at, up lmath.Vec3) (c Camera) {
 	c.Set(eye, at, up)
+	c.IsOrtho = false
+	c.Frustum.Set(-1, 1, -1, 1, 1.0, 1500.0)
+	c.ProjectionMat = Frustum(-1, 1, -1, 1, 1.0, 1500.0)
 	return
 }
 
