@@ -7,10 +7,9 @@ import (
 	"math"
 )
 
-// A stupid wraper around lmath.Vec4
-// Most of the functions just pass it off to the underlying implementation
-// to do all the grunt work.
-type color4 lmath.Vec4
+type color4 struct {
+	lmath.Vec4 // unnamed field implies an "is-a" relationship
+}
 
 func (this color4) ToRGBA() color.RGBA {
 	return color.RGBA{
@@ -19,18 +18,6 @@ func (this color4) ToRGBA() color.RGBA {
 		uint8(this.Z * 255),
 		uint8(this.W * 255),
 	}
-}
-
-func (this color4) Add(other color4) color4 {
-	return color4(lmath.Vec4(this).Add(lmath.Vec4(other)))
-}
-
-func (this color4) Sub(other color4) color4 {
-	return color4(lmath.Vec4(this).Sub(lmath.Vec4(other)))
-}
-
-func (this color4) Outer(other color4) color4 {
-	return color4(lmath.Vec4(this).Outer(lmath.Vec4(other)))
 }
 
 func (this color4) Map(f func(x float64) float64) (out color4) {
