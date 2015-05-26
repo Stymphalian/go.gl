@@ -12,5 +12,6 @@ type HitRecord struct {
 
 	// Set only if Hit is true
 	HitObject Primitive
+    HitIndex int
 	Transform lmath.Mat4
 }

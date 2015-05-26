@@ -1,18 +1,14 @@
 package jgl
 
 import (
-	"fmt"
+	// "fmt"
 	// "math"
-
 	"github.com/Stymphalian/go.math/lmath"
-	"github.com/go-gl/gl/v3.3-compatibility/gl"
+	// "github.com/go-gl/gl/v3.3-compatibility/gl"
 )
 
 type Box struct {
-	// LightFlag bool
-	Mat   Material
-	verts []lmath.Vec3
-	tris  [][3]int
+	TriMesh
 }
 
 func NewBox(scale float64) *Box {
@@ -42,37 +38,5 @@ func NewBox(scale float64) *Box {
 	out.tris = append(out.tris, [3]int{0, 1, 5})
 	out.tris = append(out.tris, [3]int{0, 5, 4})
 
-	fmt.Println("alskjlfsadf")
-	for _, v := range out.verts {
-		fmt.Println(v)
-	}
-
 	return out
-}
-
-func (this *Box) Draw(transform lmath.Mat4) {
-	gl.Color3f(1.0, 1.0, 0)
-	gl.Begin(gl.TRIANGLES)
-	for i := 0; i < len(this.tris); i++ {
-		v := transform.MultVec3(this.verts[this.tris[i][0]])
-		gl.Vertex3f(float32(v.X), float32(v.Y), float32(v.Z))
-		v = transform.MultVec3(this.verts[this.tris[i][1]])
-		gl.Vertex3f(float32(v.X), float32(v.Y), float32(v.Z))
-		v = transform.MultVec3(this.verts[this.tris[i][2]])
-		gl.Vertex3f(float32(v.X), float32(v.Y), float32(v.Z))
-	}
-	gl.End()
-}
-
-func (this *Box) Intersects(ray Ray, hit HitRecord, transform lmath.Mat4) (h HitRecord) {
-	h.Hit = false
-	return h
-}
-
-func (this *Box) Normal(hitPoint lmath.Vec3, hit HitRecord) lmath.Vec3 {
-	return lmath.Vec3{0, 0, 0}
-}
-
-func (this Box) Material() Material {
-	return this.Mat
 }
