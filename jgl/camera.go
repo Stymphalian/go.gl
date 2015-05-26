@@ -67,6 +67,23 @@ func (this *Camera) Zoom(factor float64) {
 	this.eye.AddIn(this.Forward().MultScalar(factor))
 }
 
+func (this *Camera) MoveForward(mag float64) {
+	dir := this.Forward()
+	this.at = this.at.Add(dir.MultScalar(mag))
+	this.eye = this.eye.Add(dir.MultScalar(mag))
+}
+
+func (this *Camera) MoveRight(mag float64) {
+	dir := this.Right()
+	this.at = this.at.Add(dir.MultScalar(mag))
+	this.eye = this.eye.Add(dir.MultScalar(mag))
+}
+func (this *Camera) MoveUp(mag float64) {
+	dir := this.Up()
+	this.at = this.at.Add(dir.MultScalar(mag))
+	this.eye = this.eye.Add(dir.MultScalar(mag))
+}
+
 func (this *Camera) Forward() lmath.Vec3 {
 	return this.at.Sub(this.eye).Normalize()
 }
@@ -85,7 +102,17 @@ func (this Camera) At() lmath.Vec3 {
 func (this *Camera) Up() lmath.Vec3 {
 	return this.up
 }
+func (this *Camera) SetEye(n lmath.Vec3) {
+	this.eye = n
+}
+func (this *Camera) SetAt(n lmath.Vec3) {
+	this.at = n
+}
+func (this *Camera) SetUp(n lmath.Vec3) {
+	this.up = n
+}
 
 func (this Camera) LookAt() lmath.Mat4 {
+	// return LookAt(this.eye,this.at, lmath.Vec3{0,1,0})
 	return LookAt(this.eye, this.at, this.up)
 }
